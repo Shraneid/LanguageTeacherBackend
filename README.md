@@ -52,7 +52,7 @@ cp .env.example .env
 The application combines FastAPI and Chainlit into a single server:
 
 ```bash
-python main.py
+python app.py
 ```
 
 This will start the server at http://localhost:8000 with:

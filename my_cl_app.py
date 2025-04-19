@@ -1,9 +1,10 @@
 import chainlit as cl
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
-from langchain_google_vertexai import ChatVertexAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 import os
 from dotenv import load_dotenv
+from constants import model_id
 
 # Load environment variables
 load_dotenv()
@@ -11,21 +12,8 @@ load_dotenv()
 @cl.on_chat_start
 async def main():
     """Initialize the conversation chain for this session."""
-    # Check for Google credentials
-    google_credentials = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-    if not google_credentials:
-        await cl.Message(
-            content="Error: Google credentials not configured. Please set the GOOGLE_APPLICATION_CREDENTIALS environment variable.",
-            author="System"
-        ).send()
-        return
-        
-    # Create new conversation chain with Vertex AI
-    llm = ChatVertexAI(
-        model_name="gemini-1.5-flash-002",  # Using same model as in main.py
-        temperature=0.7,
-        max_output_tokens=1024,
-    )
+    llm = ChatGoogleGenerativeAI(model=model_id)
+    llm.invoke("Write me a ballad about LangChain")
     
     # Add memory to the conversation chain
     memory = ConversationBufferMemory()
