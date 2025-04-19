@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+langchain
+chainlit
+python-dotenv
+pydantic
+google-cloud-aiplatform
+langchain-google-vertexai
