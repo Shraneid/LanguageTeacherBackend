@@ -1,6 +1,9 @@
 # Environment variables
 .env
 
+# API KEY
+.env.list
+
 # Python
 __pycache__/
 *.py[cod]
