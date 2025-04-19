@@ -1,5 +1,7 @@
+from http.client import HTTPException
+
 import firebase_admin
-from fastapi import FastAPI
+from fastapi import FastAPI, Header
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 from chainlit.utils import mount_chainlit
@@ -22,11 +24,27 @@ app = FastAPI(middleware=[
     )
 ])
 
+async def get_current_user(authorization: str = Header(None)):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    try:
+        id_token = authorization.split("Bearer ")[1]
+        decoded_token = await auth.verify_id_token(id_token)
+        uid = decoded_token.get('uid')
+        if not uid:
+            raise HTTPException(status_code=401, detail="Invalid authentication token")
+        return uid
+    except firebase_admin.exceptions.FirebaseError as e:
+        raise HTTPException(status_code=401, detail=f"Invalid authentication token: {e}")
+
 @app.get("/")
 def read_main():
     return {"message": "This is working from main app"}
 
-mount_chainlit(app=app, target="my_cl_app.py", path="/chainlit")
+# if True:
+mount_chainlit(app=app, target="src/my_cl_app.py", path="/chainlit")
+# else:
+#     mount_chainlit(app=app, target="my_cl_app.py", path="/chainlit")
 
 @app.get("/health")
 async def health():
