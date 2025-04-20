@@ -1,3 +1,4 @@
+import logging
 from http.client import HTTPException
 
 import firebase_admin
@@ -11,9 +12,9 @@ if not firebase_admin._apps:
     try:
         cred = credentials.ApplicationDefault()
         firebase_admin.initialize_app(cred)
-        print("Firebase Admin SDK initialized successfully.")
+        logging.info("Firebase Admin SDK initialized successfully.")
     except Exception as e:
-        print(f"Error initializing Firebase Admin SDK: {e}")
+        logging.info(f"Error initializing Firebase Admin SDK: {e}")
 
 app = FastAPI(middleware=[
     Middleware(
