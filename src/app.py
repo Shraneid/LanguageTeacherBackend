@@ -42,10 +42,7 @@ async def get_current_user(authorization: str = Header(None)):
 def read_main():
     return {"message": "This is working from main app"}
 
-# if True:
 mount_chainlit(app=app, target="src/my_cl_app.py", path="/chainlit")
-# else:
-#     mount_chainlit(app=app, target="my_cl_app.py", path="/chainlit")
 
 @app.get("/health")
 async def health():
