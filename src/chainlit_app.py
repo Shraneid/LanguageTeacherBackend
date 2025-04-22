@@ -9,8 +9,6 @@ from src.dev_api_key import get_key
 gemini_api_key = os.environ.get("GEMINI_API_KEY")
 if gemini_api_key is None or gemini_api_key == "":
     gemini_api_key = get_key()
-    logging.info("gemini_api_key")
-    logging.info(gemini_api_key)
 
 llm = None
 if gemini_api_key:
